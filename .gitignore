@@ -17,6 +17,9 @@
 # Ignore Rider IDE files
 .idea/
 
+# Ignore MacOS Directory files
+.DS_Store
+
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
 
