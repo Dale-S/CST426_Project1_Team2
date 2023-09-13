@@ -6,7 +6,7 @@ public class MainMenuController : MonoBehaviour
     public void StartGame()
     {
         // Load the "Game" scene
-        SceneManager.LoadScene("");
+        SceneManager.LoadScene("TempMainScene");
     }
 
     public void QuitGame()

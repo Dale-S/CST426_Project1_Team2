@@ -32,10 +32,10 @@ public class Order : MonoBehaviour
         {
             ingCount.Add(0);
         }
-        size = Random.Range(2, 5);
+        size = Random.Range(2, 6);
         for (int i = 0; i < size; i++)
         {
-            int randIngredient = Random.Range(1, 5);
+            int randIngredient = Random.Range(1, 6);
             //Debug.Log(randIngredient);
             this.request.Add(randIngredient);
             ingCount[randIngredient - 1] += 1;
@@ -50,7 +50,7 @@ public class Order : MonoBehaviour
         {
             if (ingCount[i] > 0)
             {
-                string currString = String.Format("\n{0} of {1}", ingCount[i], ingNames[i]);
+                string currString = $"\n{ingCount[i]} of {ingNames[i]}";
                 sb.Append(currString);
             }
         }
