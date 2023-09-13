@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
 
     private Transform _initTransform;
     private Quaternion _targetRotation;
-    private int _direction;
 
     // Start is called before the first frame update
     private void Start()
@@ -30,15 +29,18 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A)) /* Left Turn */
         {
-            _direction = -1;
-            _targetRotation *= Quaternion.AngleAxis(spinDegrees * _direction, Vector3.up);
+            SetRotation(-1);
         }
         else if (Input.GetKeyDown(KeyCode.D)) /* Right Turn */
         {
-            _direction = 1;
-            _targetRotation *= Quaternion.AngleAxis(spinDegrees * _direction, Vector3.up);
+            SetRotation(1);
         }
 
         transform.rotation = Quaternion.Lerp(transform.rotation, _targetRotation, spinSpeed * Time.deltaTime);
+    }
+
+    private void SetRotation(int direction)
+    {
+        _targetRotation *= Quaternion.AngleAxis(spinDegrees * direction, Vector3.up);
     }
 }
