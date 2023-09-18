@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class PauseMenuController : MonoBehaviour
 {
     public GameObject pauseMenuUI;
+    public GameObject controlUI;
  
 
     private bool isPaused = false;
@@ -42,6 +43,12 @@ public class PauseMenuController : MonoBehaviour
         isPaused = true;
     }
 
+
+    public void OpenControls()
+    {
+        
+    }
+    
     public void Resume()
     {
         Time.timeScale = 1f; // Resume the game
