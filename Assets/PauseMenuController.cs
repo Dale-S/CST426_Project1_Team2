@@ -15,7 +15,7 @@ public class PauseMenuController : MonoBehaviour
     {
         // Hide the pause menu initially
         pauseMenuUI.SetActive(false);
-        
+        controlUI.SetActive(false);
         // Add click event listeners to the buttons
     }
 
@@ -46,7 +46,14 @@ public class PauseMenuController : MonoBehaviour
 
     public void OpenControls()
     {
-        
+        pauseMenuUI.SetActive(false);
+        controlUI.SetActive(true);
+    }
+
+    public void CloseControls()
+    {
+        controlUI.SetActive(false);
+        pauseMenuUI.SetActive(true);
     }
     
     public void Resume()
