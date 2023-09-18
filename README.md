@@ -1,5 +1,8 @@
 # CST426_Project1_Team2
 
+**Milestone 1 Integrator** 
+- Conlyn
+
 What is the problem being solved / question being asked?
  - Food Service Training / Maybe make people sympathize with customer service more
  - Customer service simulator
