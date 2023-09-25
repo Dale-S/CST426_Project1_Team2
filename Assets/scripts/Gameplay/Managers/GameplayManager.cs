@@ -10,8 +10,7 @@ using UnityEngine.Serialization;
 
 public class GameplayManager : MonoBehaviour
 {
-    private DrinkCS _drink; // change this to be done by an DrinkManager
-    private readonly OrderManager _orderManager = OrderManager.orderManager;
+    private DrinkCs _drink; // change this to be done by an DrinkManager
 
     //First playable values
     public TextMeshProUGUI orderText;
@@ -29,8 +28,8 @@ public class GameplayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _orderManager.NextOrder();
-        _drink = new DrinkCS();
+        OrderManager.Instance.NextOrder();
+        _drink = null;
     }
 
     // Update is called once per frame
@@ -39,14 +38,14 @@ public class GameplayManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P) && _drink != null) //Give Customer Order
         {
             //  TODO: Remove temp logic here
-            float ratio = _orderManager.ValidateOrder(_drink);
+            float ratio = OrderManager.Instance.ValidateOrder(_drink);
             if (ratio < 0.5f)
                 _failedFulfillmentCount++;
             else
                 _successfulFulfillmentCount++;
 
             _drink = null;
-            _orderManager.NextOrder();
+            OrderManager.Instance.NextOrder();
             GiveMessage("Order given to customer");
         }
 
@@ -101,7 +100,7 @@ public class GameplayManager : MonoBehaviour
         }
         else
         {
-            _drink = new DrinkCS();
+            _drink = new DrinkCs();
             Debug.Log(">>new cup grabbed<<");
             GiveMessage("New Cup Grabbed");
         }
@@ -109,7 +108,7 @@ public class GameplayManager : MonoBehaviour
 
     private void HandleClickIngredient(InteractableItem interactableItem)
     {
-        interactableItem.OnInteract(_orderManager.GetOrder().GetItem());
+        interactableItem.OnInteract(_drink);
         GiveMessage("Added " + interactableItem.interactableName);
     }
 
@@ -124,13 +123,13 @@ public class GameplayManager : MonoBehaviour
     // TODO: The purpose of this is not clear; there are duplicated calls
     private void UpdateText()
     {
-        orderText.text = _orderManager.GetOrder() == null
+        orderText.text = OrderManager.Instance.GetOrder() == null
             ? "Waiting for order(if this is here for more than a couple seconds something went wrong, please restart the game)"
-            : _orderManager.PrintOrder();
+            : OrderManager.Instance.PrintOrder();
 
         currCup.text = _drink == null
             ? "You need to grab a cup first!"
-            : "" + _orderManager.ValidateOrder(_drink);
+            : "" + _drink.FormatItem();
 
         scoreText.text = "Correct: " + _successfulFulfillmentCount + " | Wrong: " + _failedFulfillmentCount;
     }

@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Fluid
+  - Cup
+  - Trash
+  - Ingredient
   layers:
   - Default
   - TransparentFX

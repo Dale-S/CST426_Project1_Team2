@@ -11,9 +11,9 @@ public class InteractableItem : MonoBehaviour
     public string interactableName = "water";
 
     // To be used when the items need to have cool downs
-    private float _coolDownTime = 0.0f;
+    // private float _coolDownTime = 0.0f;
 
-    public void OnInteract(DrinkCS currentDrink)
+    public void OnInteract(DrinkCs currentDrink)
     {
         currentDrink.AddIngredient(itemIngredient, 1);
     }

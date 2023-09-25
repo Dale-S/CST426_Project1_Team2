@@ -5,16 +5,14 @@ using UnityEngine;
 
 public class OrderManager : MonoBehaviour
 {
-    public static OrderManager orderManager;
+    public static OrderManager Instance;
 
     /* Represents the expected Order and its Item(s) */
     public static OrderCs CurrentOrder;
-
-
-    // Start is called before the first frame update
-    void Start()
+    
+    void Awake()
     {
-        orderManager = this;
+        Instance = this;
         CurrentOrder = new OrderCs();
     }
 
@@ -33,7 +31,7 @@ public class OrderManager : MonoBehaviour
         return CurrentOrder;
     }
 
-    public float ValidateOrder(DrinkCS given)
+    public float ValidateOrder(DrinkCs given)
     {
         return CurrentOrder.ItemAccuracy(given);
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public enum Ingredient // Specifics are temporary
@@ -53,12 +54,12 @@ public abstract class Item
         _hasIngredients = hasIngredients;
     }
 
-    public ItemType GetItemType()
+    protected ItemType GetItemType()
     {
         return _type;
     }
 
-    public void SetItemType(ItemType type)
+    protected void SetItemType(ItemType type)
     {
         _type = type;
     }
@@ -73,7 +74,7 @@ public abstract class Item
         return _cost;
     }
 
-    public bool HasIngredients()
+    protected bool HasIngredients()
     {
         return _hasIngredients;
     }
@@ -84,22 +85,23 @@ public abstract class Item
     }
 }
 
-public class DrinkCS : Item, IHasIngredients
+public class DrinkCs : Item, IHasIngredients
 {
     private Dictionary<Ingredient, int> _ingredientCount;
 
-    public DrinkCS() : base("", 0.0f, ItemType.Null, true)
+    public DrinkCs() : base("", 0.0f, ItemType.Null, true)
     {
+        _ingredientCount = new Dictionary<Ingredient, int>();
     }
 
-    public DrinkCS(string name, float cost, ItemType type, bool hasIngredients) : base(name, cost, type, hasIngredients)
+    public DrinkCs(string name, float cost, ItemType type, bool hasIngredients) : base(name, cost, type, hasIngredients)
     {
         _ingredientCount = new Dictionary<Ingredient, int>();
     }
 
     public Dictionary<Ingredient, int> GetIngredients()
     {
-        return null;
+        return _ingredientCount;
     }
 
     public void ProvideIngredients(Dictionary<Ingredient, int> ingredientCount)
@@ -113,15 +115,15 @@ public class DrinkCS : Item, IHasIngredients
             _ingredientCount[ingredient] += count;
         else
         {
-            CheckForPrimary(ingredient);
             _ingredientCount[ingredient] = count;
-        }
+        }            
+        CheckForPrimary(ingredient);
     }
 
     private void CheckForPrimary(Ingredient ingredient)
     {
         // If type is water or null, continue
-        if (GetItemType() != ItemType.Water || GetItemType() != ItemType.Null) return;
+        if (GetItemType() != ItemType.Water && GetItemType() != ItemType.Null) return;
 
         switch (ingredient)
         {
@@ -153,8 +155,9 @@ public class DrinkCS : Item, IHasIngredients
         return "Order: " + sb;
     }
 
-    public float CompareItem(DrinkCS given)
+    public float CompareItem(DrinkCs given)
     {
+        Debug.Log($"{GetItemType()} {given.GetItemType()}");
         if (GetItemType() != given.GetItemType()) return 0f;
         if (!given.HasIngredients()) return 1f;
 
@@ -174,7 +177,7 @@ public class DrinkCS : Item, IHasIngredients
 
         foreach (var entry in providedCount)
         {
-            if (!providedCount.ContainsKey(entry.Key)) /* Key not expected */
+            if (!_ingredientCount.ContainsKey(entry.Key)) /* Key not expected */
             {
                 incorrect++;
             }
@@ -190,16 +193,18 @@ public class DrinkCS : Item, IHasIngredients
             }
         }
 
-        float sum = correct - missing - incorrect;
+        float sum = correct - missing - incorrect;        
+        Debug.Log(sum);
+
         return Mathf.Clamp01(sum / _ingredientCount.Count);
     }
 }
 
 public class OrderCs
 {
-    private DrinkCS _orderItem;
+    private DrinkCs _orderItem;
 
-    private void SetItem(DrinkCS item)
+    private void SetItem(DrinkCs item)
     {
         _orderItem = item;
     }
@@ -224,14 +229,14 @@ public class OrderCs
         }
     }
 
-    public DrinkCS GetItem()
+    public DrinkCs GetItem()
     {
         return _orderItem;
     }
 
     private void AssignCoffee()
     {
-        SetItem(new DrinkCS("latte", 4.0f, ItemType.Coffee, true));
+        SetItem(new DrinkCs("latte", 4.0f, ItemType.Coffee, true));
         _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
         {
             { Ingredient.SingleShot, 2 }, { Ingredient.Milk, 1 }, { Ingredient.Sugar, 2 }
@@ -240,7 +245,7 @@ public class OrderCs
 
     private void AssignTea()
     {
-        SetItem(new DrinkCS("tea", 3.0f, ItemType.Tea, true));
+        SetItem(new DrinkCs("tea", 3.0f, ItemType.Tea, true));
         _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
         {
             { Ingredient.Teabag, 2 }, { Ingredient.Water, 2 }
@@ -249,7 +254,7 @@ public class OrderCs
 
     private void AssignWater()
     {
-        SetItem(new DrinkCS("water", 2.0f, ItemType.Water, true));
+        SetItem(new DrinkCs("water", 2.0f, ItemType.Water, true));
         _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
         {
             { Ingredient.Water, 3 }
@@ -261,10 +266,10 @@ public class OrderCs
     /// </summary>
     /// <param name="provided"> List of type Item for items given to the customer </param>
     /// <returns> Ratio of the cost given as payment based on the accuracy of the order fulfillment [0,1] </returns>
-    public float FulfillmentAccuracy(List<DrinkCS> provided)
+    public float FulfillmentAccuracy(List<DrinkCs> provided)
     {
         float correctness = 0f;
-        provided.ForEach(delegate(DrinkCS item) { correctness += ItemAccuracy(item); });
+        provided.ForEach(delegate(DrinkCs item) { correctness += ItemAccuracy(item); });
         return correctness;
     }
 
@@ -273,7 +278,7 @@ public class OrderCs
     /// </summary>
     /// <param name="given"> Provided item </param>
     /// <returns> Ratio of the cost given as payment based on the accuracy of the item fulfillment [0,1] </returns>
-    public float ItemAccuracy(DrinkCS given)
+    public float ItemAccuracy(DrinkCs given)
     {
         return _orderItem.CompareItem(given);
     }
