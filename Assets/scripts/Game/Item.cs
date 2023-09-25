@@ -166,7 +166,8 @@ public class DrinkCs : Item, IHasIngredients
     }
 
     /// <summary>
-    /// Checks the accuracy of a provided item's ingredients. 
+    /// Checks the accuracy of a provided item's ingredients.
+    /// TODO: Adjust the method used to find the final ratio
     /// </summary>
     /// <param name="providedCount"> Mapped ingredient-count of provided item </param>
     /// <returns> Ratio of the cost given as payment based on the accuracy of the item & ingredients fulfillment [0,1] </returns>
