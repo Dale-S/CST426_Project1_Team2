@@ -15,25 +15,35 @@ public enum Ingredient // Specifics are temporary
 
 public enum ItemType // Specifics are temporary
 {
+    // Drink
     Tea,
     Coffee,
     Water,
-    Muffin,
-    Apple,
+    Null
 }
 
 public interface IHasIngredients
 {
     public Dictionary<Ingredient, int> GetIngredients();
     public void ProvideIngredients(Dictionary<Ingredient, int> ingredientCount);
+    public void AddIngredient(Ingredient ingredient, int count);
+    public float IngredientsAccuracy(Dictionary<Ingredient, int> expected);
 }
 
-public class Item
+public abstract class Item<T>
 {
     private readonly string _name;
     private readonly float _cost;
     private readonly ItemType _type;
     private readonly bool _hasIngredients;
+
+    protected Item()
+    {
+        _name = "";
+        _cost = 0.0f;
+        _type = ItemType.Null;
+        _hasIngredients = false;
+    }
 
     protected Item(string name, float cost, ItemType type, bool hasIngredients)
     {
@@ -62,11 +72,22 @@ public class Item
     {
         return _hasIngredients;
     }
+
+    public virtual string FormatItem()
+    {
+        return _name;
+    }
+
+    public abstract float CompareItem(T given);
 }
 
-public class DrinkCS : Item, IHasIngredients
+public class DrinkCS : Item<DrinkCS>, IHasIngredients
 {
     private Dictionary<Ingredient, int> _ingredientCount;
+
+    public DrinkCS() : base("", 0.0f, ItemType.Null, true)
+    {
+    }
 
     public DrinkCS(string name, float cost, ItemType type) : base(name, cost, type, true)
     {
@@ -82,74 +103,111 @@ public class DrinkCS : Item, IHasIngredients
     {
         _ingredientCount = ingredientCount;
     }
-}
 
-public class Food : Item
-{
-    public Food(string name, float cost, ItemType type) : base(name, cost, type, false)
+    public void AddIngredient(Ingredient ingredient, int count)
     {
+        if (_ingredientCount.ContainsKey(ingredient))
+            _ingredientCount[ingredient] += count;
+        else
+            _ingredientCount[ingredient] = count;
     }
-}
 
-
-public class OrderCs
-{
-    public List<Item> GetItems()
+    public override string FormatItem()
     {
-        // Could be useful
-        if (new Food("latte", 5.5f, ItemType.Coffee).GetType() == typeof(Drink))
+        var sb = new System.Text.StringBuilder();
+
+        foreach (var entry in _ingredientCount)
         {
-            Debug.Log("hello");
+            if (entry.Value > 0)
+            {
+                string currString = $"\n{entry.Value} of {entry.Key}";
+                sb.Append(currString);
+            }
         }
 
-        return new List<Item>
-        {
-            new DrinkCS("latte", 5.5f, ItemType.Coffee),
-            new Food("bread", 5.5f, ItemType.Muffin)
-        };
+        return "Order: " + sb;
     }
 
-    // number of expected items v. number of expected items received
-    // each item found adds a value between 0 and 1
-    // sum of these values / number of expected items == final ratio
-    // extra, unexpected items may have some const reduction to our sum
-    // at worst, we give the item(s) for no charge
-    // at a certain total ratio, on a curve, we add a tip as a percentage of penultimate payment
-
-    /// <summary>
-    /// Checks the accuracy of the attempted fulfillment for this Order.
-    /// </summary>
-    /// <param name="provided"> List of type Item for items given to the customer </param>
-    /// <returns> Ratio of the cost given as payment based on the accuracy of the order fulfillment [0,1] </returns>
-    public float FulfillmentAccuracy(List<Item> provided)
+    public override float CompareItem(DrinkCS given)
     {
-        float correctness = 0f;
-        provided.ForEach(delegate(Item item) { correctness += ItemAccuracy(item); });
-        return correctness;
-    }
+        if (GetItemType() != given.GetItemType()) return 0f;
+        if (!given.HasIngredients()) return 1f;
 
-    /// <summary>
-    /// Checks the accuracy of a provided item. 
-    /// </summary>
-    /// <param name="item"> Provided item </param>
-    /// <returns> Ratio of the cost given as payment based on the accuracy of the item fulfillment [0,1] </returns>
-    private float ItemAccuracy(Item item)
-    {
-        if (item.GetItemType() != ItemType.Coffee) return 0f;
-        if (!item.HasIngredients()) return 1f;
-
-        IHasIngredients d = (IHasIngredients)item;
-        return IngredientsAccuracy(d.GetIngredients());
+        IHasIngredients givenWithIngredients = given;
+        return IngredientsAccuracy(givenWithIngredients.GetIngredients());
     }
 
     /// <summary>
     /// Checks the accuracy of a provided item's ingredients. 
     /// </summary>
-    /// <param name="providedIngredientCount"> Mapped ingredient-count of provided item </param>
+    /// <param name="providedCount"> Mapped ingredient-count of provided item </param>
     /// <returns> Ratio of the cost given as payment based on the accuracy of the item & ingredients fulfillment [0,1] </returns>
-    private float IngredientsAccuracy(Dictionary<Ingredient, int> providedIngredientCount)
+    public float IngredientsAccuracy(Dictionary<Ingredient, int> providedCount)
     {
-        // Use maps (expected v provided) and loop (for each on the provided map) to calc a correctness ratio
-        return 1.0f;
+        // Does each ingredient exist? Do the counts match? Are there extra ingredients?
+        int correct = 0, incorrect = 0, missing = _ingredientCount.Count;
+
+        foreach (var entry in providedCount)
+        {
+            if (!providedCount.ContainsKey(entry.Key)) /* Key not expected */
+            {
+                incorrect++;
+            }
+            else if (entry.Value != _ingredientCount[entry.Key]) /* Found wrong value for key */
+            {
+                missing--;
+                incorrect++;
+            }
+            else /* Found correct value or key */
+            {
+                correct++;
+                missing--;
+            }
+        }
+
+        float sum = correct - missing - incorrect;
+        return Mathf.Clamp01(sum / _ingredientCount.Count);
+    }
+}
+
+public class OrderCs
+{
+    private DrinkCS _orderItem;
+
+    private void SetItem(DrinkCS item)
+    {
+        _orderItem = item;
+    }
+
+    public void InitRandomItem()
+    {
+        // TODO:
+    }
+
+    public Item<DrinkCS> GetItem()
+    {
+        return _orderItem;
+    }
+
+    /// <summary>
+    /// NOT TO BE USED - Checks the accuracy of the attempted fulfillment for this Order.
+    /// </summary>
+    /// <param name="provided"> List of type Item for items given to the customer </param>
+    /// <returns> Ratio of the cost given as payment based on the accuracy of the order fulfillment [0,1] </returns>
+    public float FulfillmentAccuracy(List<DrinkCS> provided)
+    {
+        float correctness = 0f;
+        provided.ForEach(delegate(DrinkCS item) { correctness += ItemAccuracy(item); });
+        return correctness;
+    }
+
+    /// <summary>
+    /// Checks the accuracy of a provided item compared to private _orderItem. 
+    /// </summary>
+    /// <param name="given"> Provided item </param>
+    /// <returns> Ratio of the cost given as payment based on the accuracy of the item fulfillment [0,1] </returns>
+    public float ItemAccuracy(DrinkCS given)
+    {
+        return _orderItem.CompareItem(given);
     }
 }
