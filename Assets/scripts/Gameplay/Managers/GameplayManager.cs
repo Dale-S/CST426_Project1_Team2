@@ -21,6 +21,8 @@ public class GameplayManager : MonoBehaviour
     private int _successfulFulfillmentCount = 0;
     private int _failedFulfillmentCount = 0;
 
+    private const int LayerMask = 1 << 6;
+
 
     public Camera playerCamera;
 
@@ -54,29 +56,30 @@ public class GameplayManager : MonoBehaviour
             /*
              * Interaction will either be with the ingredients, cup, or trash
              * Place these gameObjects in their own Physics layer
-             * Perform based on whether they have 
+             * Perform based on whether they have the tag
              */
-            if (Physics.Raycast(ray, out var hit, 100))
+            if (Physics.Raycast(ray, out var hit, 100, LayerMask))
             {
-                if (hit.transform.name == cup.transform.name)
+                if (hit.transform.CompareTag("Cup"))
                 {
                     HandleClickCup();
-                    return;
                 }
 
-                if (_drink != null)
-                {
-                    if (String.Equals(Tag))
-
-                    if (hit.transform.name == trash.transform.name)
-                    {
-                        DC = null;
-                        GiveMessage("Cup thrown away");
-                    }
-                }
-                else
+                else if (_drink == null)
                 {
                     GiveMessage("You need to grab a cup first!");
+                }
+
+                else if (hit.transform.CompareTag("Ingredient"))
+                {
+                    InteractableItem interactableItem =
+                        hit.transform.gameObject.GetComponent<InteractableItem>();
+                    HandleClickIngredient(interactableItem);
+                }
+
+                else if (hit.transform.CompareTag("Trash"))
+                {
+                    HandleClickTrash();
                 }
             }
         }
@@ -86,7 +89,8 @@ public class GameplayManager : MonoBehaviour
 
     private void HandleClickTrash()
     {
-        
+        _drink = null;
+        GiveMessage("Cup thrown away");
     }
 
     private void HandleClickCup()
@@ -103,37 +107,10 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
-    private void HandleClickIngredient()
+    private void HandleClickIngredient(InteractableItem interactableItem)
     {
-        if (hit.transform.name == i1.transform.name)
-        {
-            DC.addIngredient(1);
-            GiveMessage("Added " + i1.transform.name);
-        }
-
-        if (hit.transform.name == i2.transform.name)
-        {
-            DC.addIngredient(2);
-            GiveMessage("Added " + i2.transform.name);
-        }
-
-        if (hit.transform.name == i3.transform.name)
-        {
-            DC.addIngredient(3);
-            GiveMessage("Added " + i3.transform.name);
-        }
-
-        if (hit.transform.name == i4.transform.name)
-        {
-            DC.addIngredient(4);
-            GiveMessage("Added " + i4.transform.name);
-        }
-
-        if (hit.transform.name == i5.transform.name)
-        {
-            DC.addIngredient(5);
-            GiveMessage("Added " + i5.transform.name);
-        }
+        interactableItem.OnInteract(_orderManager.GetOrder().GetItem());
+        GiveMessage("Added " + interactableItem.interactableName);
     }
 
     //Functions for first Playable only
@@ -145,26 +122,15 @@ public class GameplayManager : MonoBehaviour
     }
 
     // TODO: The purpose of this is not clear; there are duplicated calls
-    private void UpdateText() 
+    private void UpdateText()
     {
-        if (_orderManager.GetOrder() == null)
-        {
-            orderText.text =
-                "Waiting for order(if this is here for more than a couple seconds something went wrong, please restart the game)";
-        }
-        else
-        {
-            orderText.text = _orderManager.PrintOrder();
-        }
+        orderText.text = _orderManager.GetOrder() == null
+            ? "Waiting for order(if this is here for more than a couple seconds something went wrong, please restart the game)"
+            : _orderManager.PrintOrder();
 
-        if (_drink == null)
-        {
-            currCup.text = "You need to grab a cup first!";
-        }
-        else
-        {
-            currCup.text = "" + _orderManager.ValidateOrder(_drink);
-        }
+        currCup.text = _drink == null
+            ? "You need to grab a cup first!"
+            : "" + _orderManager.ValidateOrder(_drink);
 
         scoreText.text = "Correct: " + _successfulFulfillmentCount + " | Wrong: " + _failedFulfillmentCount;
     }

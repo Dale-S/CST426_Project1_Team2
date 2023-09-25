@@ -30,11 +30,11 @@ public interface IHasIngredients
     public float IngredientsAccuracy(Dictionary<Ingredient, int> expected);
 }
 
-public abstract class Item<T>
+public abstract class Item
 {
     private readonly string _name;
     private readonly float _cost;
-    private readonly ItemType _type;
+    private ItemType _type;
     private readonly bool _hasIngredients;
 
     protected Item()
@@ -58,6 +58,11 @@ public abstract class Item<T>
         return _type;
     }
 
+    public void SetItemType(ItemType type)
+    {
+        _type = type;
+    }
+
     public string GetName()
     {
         return _name;
@@ -77,11 +82,9 @@ public abstract class Item<T>
     {
         return _name;
     }
-
-    public abstract float CompareItem(T given);
 }
 
-public class DrinkCS : Item<DrinkCS>, IHasIngredients
+public class DrinkCS : Item, IHasIngredients
 {
     private Dictionary<Ingredient, int> _ingredientCount;
 
@@ -89,7 +92,7 @@ public class DrinkCS : Item<DrinkCS>, IHasIngredients
     {
     }
 
-    public DrinkCS(string name, float cost, ItemType type) : base(name, cost, type, true)
+    public DrinkCS(string name, float cost, ItemType type, bool hasIngredients) : base(name, cost, type, hasIngredients)
     {
         _ingredientCount = new Dictionary<Ingredient, int>();
     }
@@ -109,7 +112,29 @@ public class DrinkCS : Item<DrinkCS>, IHasIngredients
         if (_ingredientCount.ContainsKey(ingredient))
             _ingredientCount[ingredient] += count;
         else
+        {
+            CheckForPrimary(ingredient);
             _ingredientCount[ingredient] = count;
+        }
+    }
+
+    private void CheckForPrimary(Ingredient ingredient)
+    {
+        // If type is water or null, continue
+        if (GetItemType() != ItemType.Water || GetItemType() != ItemType.Null) return;
+
+        switch (ingredient)
+        {
+            case Ingredient.SingleShot:
+                SetItemType(ItemType.Coffee);
+                break;
+            case Ingredient.Teabag:
+                SetItemType(ItemType.Tea);
+                break;
+            case Ingredient.Water:
+                SetItemType(ItemType.Water);
+                break;
+        }
     }
 
     public override string FormatItem()
@@ -128,7 +153,7 @@ public class DrinkCS : Item<DrinkCS>, IHasIngredients
         return "Order: " + sb;
     }
 
-    public override float CompareItem(DrinkCS given)
+    public float CompareItem(DrinkCS given)
     {
         if (GetItemType() != given.GetItemType()) return 0f;
         if (!given.HasIngredients()) return 1f;
@@ -181,12 +206,54 @@ public class OrderCs
 
     public void InitRandomItem()
     {
-        // TODO:
+        int rand = Random.Range(0, 3);
+        switch (rand)
+        {
+            case 0:
+                AssignCoffee();
+                break;
+            case 1:
+                AssignTea();
+                break;
+            case 2:
+                AssignWater();
+                break;
+            default:
+                Debug.LogError($"Error creating random order object with rand {rand}");
+                break;
+        }
     }
 
-    public Item<DrinkCS> GetItem()
+    public DrinkCS GetItem()
     {
         return _orderItem;
+    }
+
+    private void AssignCoffee()
+    {
+        SetItem(new DrinkCS("latte", 4.0f, ItemType.Coffee, true));
+        _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
+        {
+            { Ingredient.SingleShot, 2 }, { Ingredient.Milk, 1 }, { Ingredient.Sugar, 2 }
+        });
+    }
+
+    private void AssignTea()
+    {
+        SetItem(new DrinkCS("tea", 3.0f, ItemType.Tea, true));
+        _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
+        {
+            { Ingredient.Teabag, 2 }, { Ingredient.Water, 2 }
+        });
+    }
+
+    private void AssignWater()
+    {
+        SetItem(new DrinkCS("water", 2.0f, ItemType.Water, true));
+        _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
+        {
+            { Ingredient.Water, 3 }
+        });
     }
 
     /// <summary>
