@@ -10,12 +10,19 @@ using UnityEngine.Serialization;
 
 public class GameplayManager : MonoBehaviour
 {
+    //Timer values for message
+    private float messageMaxTime = 3.0f;
+    private float currentMessageTime = 0f;
+    
+    //Money Handler Instantiation
+    public MoneyHandler MH;
+
     private DrinkCs _drink; // change this to be done by an DrinkManager
 
     //First playable values
     public TextMeshProUGUI orderText;
     public TextMeshProUGUI warningText;
-    public TextMeshProUGUI scoreText;
+    //public TextMeshProUGUI scoreText;
     public TextMeshProUGUI currCup;
     private int _successfulFulfillmentCount = 0;
     private int _failedFulfillmentCount = 0;
@@ -35,14 +42,29 @@ public class GameplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && _drink != null) //Give Customer Order
+        //Warning Timer Update
+        if (currentMessageTime > 0)
+        {
+            currentMessageTime -= 1 * Time.deltaTime;
+        }
+        else
+        {
+            warningText.text = "";
+        }
+        
+        if (Input.GetKeyDown(KeyCode.R) && _drink != null) //Give Customer Order
         {
             //  TODO: Remove temp logic here
             float ratio = OrderManager.Instance.ValidateOrder(_drink);
             if (ratio < 0.5f)
+            {
                 _failedFulfillmentCount++;
+            }
             else
+            {
                 _successfulFulfillmentCount++;
+                MH.addFunds(10);
+            }
 
             _drink = null;
             OrderManager.Instance.NextOrder();
@@ -115,9 +137,8 @@ public class GameplayManager : MonoBehaviour
     //Functions for first Playable only
     private void GiveMessage(string message)
     {
-        StopCoroutine(MessageDelay());
+        currentMessageTime = messageMaxTime;
         warningText.text = message;
-        StartCoroutine(MessageDelay());
     }
 
     // TODO: The purpose of this is not clear; there are duplicated calls
@@ -131,12 +152,12 @@ public class GameplayManager : MonoBehaviour
             ? "You need to grab a cup first!"
             : "" + _drink.FormatItem();
 
-        scoreText.text = "Correct: " + _successfulFulfillmentCount + " | Wrong: " + _failedFulfillmentCount;
+        //scoreText.text = "Correct: " + _successfulFulfillmentCount + " | Wrong: " + _failedFulfillmentCount;
     }
 
-    private IEnumerator MessageDelay()
+    /*private IEnumerator MessageDelay()
     {
         yield return new WaitForSeconds(3);
         warningText.text = "";
-    }
+    }*/
 }
