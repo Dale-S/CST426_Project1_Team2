@@ -18,12 +18,15 @@ public class GameplayManager : MonoBehaviour
     
     //Money Handler Instantiation
     public MoneyHandler MH;
+    public DishWashingManager DWM;
+    public MinigameManager MM;
 
     private DrinkCs _drink; // change this to be done by an DrinkManager
 
     //First playable values
     public TextMeshProUGUI orderText;
     public TextMeshProUGUI warningText;
+    public GameObject arrow;
 
     //public TextMeshProUGUI scoreText;
     public TextMeshProUGUI currCup;
@@ -53,6 +56,22 @@ public class GameplayManager : MonoBehaviour
         else
         {
             warningText.text = "";
+        }
+
+        if (DWM.getCups() < 1)
+        {
+            if (MM.currFocus() != 0)
+            {
+                arrow.SetActive(false);
+            }
+            else
+            {
+                arrow.SetActive(true);
+            }
+        }
+        else
+        {
+            arrow.SetActive(false);
         }
 
         if (GMActive)
@@ -119,7 +138,11 @@ public class GameplayManager : MonoBehaviour
 
     private void HandleClickCup()
     {
-        if (_drink != null)
+        if (DWM.getCups() < 1)
+        {
+            GiveMessage("Out of clean cups, go wash some dishes!");
+        }
+        else if (_drink != null)
         {
             GiveMessage("You already have a cup, if you need to start over throw your previous one away");
         }
@@ -128,6 +151,10 @@ public class GameplayManager : MonoBehaviour
             _drink = new DrinkCs();
             Debug.Log(">>new cup grabbed<<");
             GiveMessage("New Cup Grabbed");
+            if (DWM.getCups() > 0)
+            {
+                DWM.subtractCup();
+            }
         }
     }
 

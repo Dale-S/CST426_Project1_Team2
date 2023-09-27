@@ -8,7 +8,7 @@ public class DayTimerManager : MonoBehaviour
 {
     //Timer Variables
     private float loadBuffer = 5f;
-    private float minutes = 2f;
+    private float minutes = .2f;
     private float dayTime;
     private float timeLeft = 0f;
     
@@ -27,6 +27,7 @@ public class DayTimerManager : MonoBehaviour
     public GameObject gameplayUI;
     
     public MoneyHandler MH;
+    public MinigameManager MM;
     
 
     public GameObject DayEndScreen;
@@ -64,6 +65,7 @@ public class DayTimerManager : MonoBehaviour
                 today.text = $"Money Earned Today: ${MH.returnFunds()}";
                 MH.emptyCurrent();
                 dayOver = true;
+                //MM.disableAll();
             }
             if (dayCount >= maxDays)
             {
@@ -79,6 +81,7 @@ public class DayTimerManager : MonoBehaviour
         gameplayUI.SetActive(true);
         timeLeft = dayTime + loadBuffer;
         dayCount++;
+        //MM.enableAll();
     }
 }
 

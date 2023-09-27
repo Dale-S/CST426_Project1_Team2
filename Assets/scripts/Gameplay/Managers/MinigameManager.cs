@@ -62,4 +62,30 @@ public class MinigameManager : MonoBehaviour
             DWM.dwState(true);
         }
     }
+
+    public int currFocus()
+    {
+        return focus;
+    }
+
+    public void disableAll()
+    {
+        DWM.dwState(false);
+        GM.gmState(false);
+    }
+
+    public void enableAll()
+    {
+        if (focus == 0) //Set coffee station true
+        {
+            DWM.dwState(false);
+            GM.gmState(true);
+        }
+
+        if (focus == 3) //Set dishwasher true
+        {
+            GM.gmState(false);
+            DWM.dwState(true);
+        }
+    }
 }
