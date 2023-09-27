@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Production/MainMenu.unity
     guid: 8af8d2da672895245aaf61b26c05cf61
   - enabled: 1
+    path: Assets/Scenes/WIP/Playtest2.unity
+    guid: b5946cd931827491182696de54dcff71
+  - enabled: 1
     path: Assets/Scenes/WIP/TempMainScene.unity
     guid: bbadf29ffff1604439c5a4026d4710d0
   m_configObjects: {}
