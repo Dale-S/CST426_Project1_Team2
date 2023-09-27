@@ -13,6 +13,8 @@ public class GameplayManager : MonoBehaviour
     //Timer values for message
     private float messageMaxTime = 3.0f;
     private float currentMessageTime = 0f;
+
+    private bool GMActive = true;
     
     //Money Handler Instantiation
     public MoneyHandler MH;
@@ -22,6 +24,7 @@ public class GameplayManager : MonoBehaviour
     //First playable values
     public TextMeshProUGUI orderText;
     public TextMeshProUGUI warningText;
+
     //public TextMeshProUGUI scoreText;
     public TextMeshProUGUI currCup;
     private int _successfulFulfillmentCount = 0;
@@ -51,60 +54,60 @@ public class GameplayManager : MonoBehaviour
         {
             warningText.text = "";
         }
-        
-        if (Input.GetKeyDown(KeyCode.R) && _drink != null) //Give Customer Order
+
+        if (GMActive)
         {
-            //  TODO: Remove temp logic here
-            float ratio = OrderManager.Instance.ValidateOrder(_drink);
-            if (ratio < 0.5f)
+            if (Input.GetKeyDown(KeyCode.R) && _drink != null) //Give Customer Order
             {
-                _failedFulfillmentCount++;
+                //  TODO: Remove temp logic here
+                float ratio = OrderManager.Instance.ValidateOrder(_drink);
+                if (ratio < 0.5f)
+                {
+                    _failedFulfillmentCount++;
+                }
+                else
+                {
+                    _successfulFulfillmentCount++;
+                    MH.addFunds(10);
+                }
+            
+                _drink = null;
+                OrderManager.Instance.NextOrder();
+                GiveMessage("Order given to customer");
             }
-            else
+            if (Input.GetMouseButtonDown(0))
             {
-                _successfulFulfillmentCount++;
-                MH.addFunds(10);
+                Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+                /*
+                * Interaction will either be with the ingredients, cup, or trash
+                * Place these gameObjects in their own Physics layer
+                * Perform based on whether they have the tag
+                */
+                if (Physics.Raycast(ray, out var hit, 100, LayerMask))
+                {
+                    if (hit.transform.CompareTag("Cup"))
+                    {
+                        HandleClickCup();
+                    }
+            
+                    else if (_drink == null)
+                    {
+                        GiveMessage("You need to grab a cup first!");
+                    }
+            
+                    else if (hit.transform.CompareTag("Ingredient"))
+                    {
+                        InteractableItem interactableItem = hit.transform.gameObject.GetComponent<InteractableItem>(); 
+                        HandleClickIngredient(interactableItem);
+                    }
+            
+                    else if (hit.transform.CompareTag("Trash"))
+                    {
+                        HandleClickTrash();
+                    }
+                }
             }
-
-            _drink = null;
-            OrderManager.Instance.NextOrder();
-            GiveMessage("Order given to customer");
         }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-            /*
-             * Interaction will either be with the ingredients, cup, or trash
-             * Place these gameObjects in their own Physics layer
-             * Perform based on whether they have the tag
-             */
-            if (Physics.Raycast(ray, out var hit, 100, LayerMask))
-            {
-                if (hit.transform.CompareTag("Cup"))
-                {
-                    HandleClickCup();
-                }
-
-                else if (_drink == null)
-                {
-                    GiveMessage("You need to grab a cup first!");
-                }
-
-                else if (hit.transform.CompareTag("Ingredient"))
-                {
-                    InteractableItem interactableItem =
-                        hit.transform.gameObject.GetComponent<InteractableItem>();
-                    HandleClickIngredient(interactableItem);
-                }
-
-                else if (hit.transform.CompareTag("Trash"))
-                {
-                    HandleClickTrash();
-                }
-            }
-        }
-
         UpdateText();
     }
 
@@ -153,6 +156,11 @@ public class GameplayManager : MonoBehaviour
             : "" + _drink.FormatItem();
 
         //scoreText.text = "Correct: " + _successfulFulfillmentCount + " | Wrong: " + _failedFulfillmentCount;
+    }
+
+    public void gmState(bool value)
+    {
+        GMActive = value;
     }
 
     /*private IEnumerator MessageDelay()

@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 265.5, y: -109.4}
+  m_AnchoredPosition: {x: 282, y: -128}
   m_SizeDelta: {x: 27.3028, y: 28.6178}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7808010990400499917
@@ -1172,14 +1172,14 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'P: give order to customer
+  m_Text: 'R: give order to customer
 
 
     Left Click on item to add it to the cup
 
 
     A/D:
-    To turn camera (no use yet, for later updates)'
+    To turn camera '
 --- !u!1 &7938073081812695562
 GameObject:
   m_ObjectHideFlags: 0

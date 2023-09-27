@@ -11,7 +11,7 @@ public enum Ingredient // Specifics are temporary
     Cinnamon,
     SingleShot,
     Water,
-    Teabag
+    Tea
 }
 
 public enum ItemType // Specifics are temporary
@@ -130,7 +130,7 @@ public class DrinkCs : Item, IHasIngredients
             case Ingredient.SingleShot:
                 SetItemType(ItemType.Coffee);
                 break;
-            case Ingredient.Teabag:
+            case Ingredient.Tea:
                 SetItemType(ItemType.Tea);
                 break;
             case Ingredient.Water:
@@ -249,7 +249,7 @@ public class OrderCs
         SetItem(new DrinkCs("tea", 3.0f, ItemType.Tea, true));
         _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
         {
-            { Ingredient.Teabag, 2 }, { Ingredient.Water, 2 }
+            { Ingredient.Tea, 2 }, { Ingredient.Water, 2 }
         });
     }
 

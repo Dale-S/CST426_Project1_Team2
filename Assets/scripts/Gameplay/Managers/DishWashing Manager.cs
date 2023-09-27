@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class DishWashingManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    private bool DWActive = false;
+    public GameObject dwUI;
+    
     // Update is called once per frame
     void Update()
     {
-        
+        if (DWActive)
+        {
+            
+        }
+    }
+
+    public void dwState(bool value)
+    {
+        DWActive = value;
+        if (value)
+        {
+            dwUI.SetActive(true);
+        }
+        else
+        {
+            dwUI.SetActive(false);
+        }
     }
 }
