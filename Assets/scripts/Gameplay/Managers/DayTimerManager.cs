@@ -8,7 +8,7 @@ public class DayTimerManager : MonoBehaviour
 {
     //Timer Variables
     private float loadBuffer = 5f;
-    private float minutes = .2f;
+    private float minutes = 2f;
     private float dayTime;
     private float timeLeft = 0f;
     
