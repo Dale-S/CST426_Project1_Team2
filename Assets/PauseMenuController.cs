@@ -7,6 +7,8 @@ public class PauseMenuController : MonoBehaviour
 {
     public GameObject pauseMenuUI;
     public GameObject controlUI;
+
+    public MinigameManager MM;
  
 
     private bool isPaused = false;
@@ -61,11 +63,13 @@ public class PauseMenuController : MonoBehaviour
         Time.timeScale = 1f; // Resume the game
         pauseMenuUI.SetActive(false);
         isPaused = false;
+        MM.unPause();
     }
 
     public void Quit()
     {
         // You can add code here to handle quitting the game
         // For example: Application.Quit();
+        Application.Quit();
     }
 }

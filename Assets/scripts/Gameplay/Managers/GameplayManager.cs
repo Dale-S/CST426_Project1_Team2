@@ -10,12 +10,25 @@ using UnityEngine.Serialization;
 
 public class GameplayManager : MonoBehaviour
 {
+    //Timer values for message
+    private float messageMaxTime = 3.0f;
+    private float currentMessageTime = 0f;
+
+    private bool GMActive = true;
+    
+    //Money Handler Instantiation
+    public MoneyHandler MH;
+    public DishWashingManager DWM;
+    public MinigameManager MM;
+
     private DrinkCs _drink; // change this to be done by an DrinkManager
 
     //First playable values
     public TextMeshProUGUI orderText;
     public TextMeshProUGUI warningText;
-    public TextMeshProUGUI scoreText;
+    public GameObject arrow;
+
+    //public TextMeshProUGUI scoreText;
     public TextMeshProUGUI currCup;
     private int _successfulFulfillmentCount = 0;
     private int _failedFulfillmentCount = 0;
@@ -35,54 +48,85 @@ public class GameplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && _drink != null) //Give Customer Order
+        //Warning Timer Update
+        if (currentMessageTime > 0)
         {
-            //  TODO: Remove temp logic here
-            float ratio = OrderManager.Instance.ValidateOrder(_drink);
-            if (ratio < 0.5f)
-                _failedFulfillmentCount++;
-            else
-                _successfulFulfillmentCount++;
-
-            _drink = null;
-            OrderManager.Instance.NextOrder();
-            GiveMessage("Order given to customer");
+            currentMessageTime -= 1 * Time.deltaTime;
+        }
+        else
+        {
+            warningText.text = "";
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (DWM.getCups() < 1)
         {
-            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-            /*
-             * Interaction will either be with the ingredients, cup, or trash
-             * Place these gameObjects in their own Physics layer
-             * Perform based on whether they have the tag
-             */
-            if (Physics.Raycast(ray, out var hit, 100, LayerMask))
+            if (MM.currFocus() != 0)
             {
-                if (hit.transform.CompareTag("Cup"))
-                {
-                    HandleClickCup();
-                }
+                arrow.SetActive(false);
+            }
+            else
+            {
+                arrow.SetActive(true);
+            }
+        }
+        else
+        {
+            arrow.SetActive(false);
+        }
 
-                else if (_drink == null)
+        if (GMActive)
+        {
+            if (Input.GetKeyDown(KeyCode.R) && _drink != null) //Give Customer Order
+            {
+                //  TODO: Remove temp logic here
+                float ratio = OrderManager.Instance.ValidateOrder(_drink);
+                if (ratio < 0.5f)
                 {
-                    GiveMessage("You need to grab a cup first!");
+                    _failedFulfillmentCount++;
                 }
-
-                else if (hit.transform.CompareTag("Ingredient"))
+                else
                 {
-                    InteractableItem interactableItem =
-                        hit.transform.gameObject.GetComponent<InteractableItem>();
-                    HandleClickIngredient(interactableItem);
+                    _successfulFulfillmentCount++;
+                    MH.addFunds(10);
                 }
-
-                else if (hit.transform.CompareTag("Trash"))
+            
+                _drink = null;
+                OrderManager.Instance.NextOrder();
+                GiveMessage("Order given to customer");
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+                /*
+                * Interaction will either be with the ingredients, cup, or trash
+                * Place these gameObjects in their own Physics layer
+                * Perform based on whether they have the tag
+                */
+                if (Physics.Raycast(ray, out var hit, 100, LayerMask))
                 {
-                    HandleClickTrash();
+                    if (hit.transform.CompareTag("Cup"))
+                    {
+                        HandleClickCup();
+                    }
+            
+                    else if (_drink == null)
+                    {
+                        GiveMessage("You need to grab a cup first!");
+                    }
+            
+                    else if (hit.transform.CompareTag("Ingredient"))
+                    {
+                        InteractableItem interactableItem = hit.transform.gameObject.GetComponent<InteractableItem>(); 
+                        HandleClickIngredient(interactableItem);
+                    }
+            
+                    else if (hit.transform.CompareTag("Trash"))
+                    {
+                        HandleClickTrash();
+                    }
                 }
             }
         }
-
         UpdateText();
     }
 
@@ -94,7 +138,11 @@ public class GameplayManager : MonoBehaviour
 
     private void HandleClickCup()
     {
-        if (_drink != null)
+        if (DWM.getCups() < 1)
+        {
+            GiveMessage("Out of clean cups, go wash some dishes!");
+        }
+        else if (_drink != null)
         {
             GiveMessage("You already have a cup, if you need to start over throw your previous one away");
         }
@@ -103,6 +151,10 @@ public class GameplayManager : MonoBehaviour
             _drink = new DrinkCs();
             Debug.Log(">>new cup grabbed<<");
             GiveMessage("New Cup Grabbed");
+            if (DWM.getCups() > 0)
+            {
+                DWM.subtractCup();
+            }
         }
     }
 
@@ -115,9 +167,8 @@ public class GameplayManager : MonoBehaviour
     //Functions for first Playable only
     private void GiveMessage(string message)
     {
-        StopCoroutine(MessageDelay());
+        currentMessageTime = messageMaxTime;
         warningText.text = message;
-        StartCoroutine(MessageDelay());
     }
 
     // TODO: The purpose of this is not clear; there are duplicated calls
@@ -131,12 +182,17 @@ public class GameplayManager : MonoBehaviour
             ? "You need to grab a cup first!"
             : "" + _drink.FormatItem();
 
-        scoreText.text = "Correct: " + _successfulFulfillmentCount + " | Wrong: " + _failedFulfillmentCount;
+        //scoreText.text = "Correct: " + _successfulFulfillmentCount + " | Wrong: " + _failedFulfillmentCount;
     }
 
-    private IEnumerator MessageDelay()
+    public void gmState(bool value)
+    {
+        GMActive = value;
+    }
+
+    /*private IEnumerator MessageDelay()
     {
         yield return new WaitForSeconds(3);
         warningText.text = "";
-    }
+    }*/
 }
