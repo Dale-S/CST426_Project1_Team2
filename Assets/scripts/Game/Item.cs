@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental;
+//using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public enum Ingredient // Specifics are temporary
@@ -9,9 +9,9 @@ public enum Ingredient // Specifics are temporary
     Syrup,
     Half,
     Cinnamon,
-    SingleShot,
+    Espresso,
     Water,
-    Teabag
+    Tea
 }
 
 public enum ItemType // Specifics are temporary
@@ -127,10 +127,10 @@ public class DrinkCs : Item, IHasIngredients
 
         switch (ingredient)
         {
-            case Ingredient.SingleShot:
+            case Ingredient.Espresso:
                 SetItemType(ItemType.Coffee);
                 break;
-            case Ingredient.Teabag:
+            case Ingredient.Tea:
                 SetItemType(ItemType.Tea);
                 break;
             case Ingredient.Water:
@@ -152,7 +152,7 @@ public class DrinkCs : Item, IHasIngredients
             }
         }
 
-        return "Order: " + sb;
+        return "Current Cup: " + sb;
     }
 
     public float CompareItem(DrinkCs given)
@@ -240,7 +240,7 @@ public class OrderCs
         SetItem(new DrinkCs("latte", 4.0f, ItemType.Coffee, true));
         _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
         {
-            { Ingredient.SingleShot, 2 }, { Ingredient.Milk, 1 }, { Ingredient.Sugar, 2 }
+            { Ingredient.Espresso, 2 }, { Ingredient.Milk, 1 }, { Ingredient.Sugar, 2 }
         });
     }
 
@@ -249,7 +249,7 @@ public class OrderCs
         SetItem(new DrinkCs("tea", 3.0f, ItemType.Tea, true));
         _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
         {
-            { Ingredient.Teabag, 2 }, { Ingredient.Water, 2 }
+            { Ingredient.Tea, 2 }, { Ingredient.Water, 2 }
         });
     }
 
