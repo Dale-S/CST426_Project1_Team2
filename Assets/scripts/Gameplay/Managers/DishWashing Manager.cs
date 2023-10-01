@@ -39,6 +39,19 @@ public class DishWashingManager : MonoBehaviour
                 }
             }
             fill.fillAmount = currFill;
+            if (cups >= maxCups)
+            {
+                dwUI.SetActive(false);
+            }
+            else
+            {
+                dwUI.SetActive(true);
+            }
+            
+            if (cups >= maxCups)
+            {
+                dwUI.SetActive(false);
+            }
         }
 
         cupText.text = $"{cups}";

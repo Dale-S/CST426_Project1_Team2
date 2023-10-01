@@ -42,7 +42,7 @@ public class GameplayScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) //Give Customer Order
+        if (Input.GetKeyDown(KeyCode.R)) //Give Customer Order
         {
             bool job;
             job = DC.check(OC.returnOrder());

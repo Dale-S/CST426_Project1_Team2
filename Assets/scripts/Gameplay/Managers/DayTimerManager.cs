@@ -81,6 +81,7 @@ public class DayTimerManager : MonoBehaviour
         gameplayUI.SetActive(true);
         timeLeft = dayTime + loadBuffer;
         dayCount++;
+        day.text = $"{dayCount}";
         //MM.enableAll();
     }
 }
