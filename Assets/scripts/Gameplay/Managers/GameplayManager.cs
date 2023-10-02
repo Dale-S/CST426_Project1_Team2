@@ -86,10 +86,12 @@ public class GameplayManager : MonoBehaviour
                 if (ratio < 0.5f)
                 {
                     _failedFulfillmentCount++;
+                    _soundManager.PlaySoundEffect("WrongOrder");
                 }
                 else
                 {
                     _successfulFulfillmentCount++;
+                    _soundManager.PlaySoundEffect("RightOrder");
                     MH.addFunds(10);
                 }
             
