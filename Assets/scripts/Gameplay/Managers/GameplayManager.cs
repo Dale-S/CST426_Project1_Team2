@@ -174,6 +174,7 @@ public class GameplayManager : MonoBehaviour
         {
             case "Water":
                 _soundManager.PlaySoundEffect("MilkPour");
+                water.Play();
                 break;
             case "Milk" :
                 _soundManager.PlaySoundEffect("MilkPour");
@@ -185,9 +186,11 @@ public class GameplayManager : MonoBehaviour
                 break;
             case "Espresso":
                 _soundManager.PlaySoundEffect("CoffeePour");
+                espresso.Play();
                 break;
             case "Tea":
                 _soundManager.PlaySoundEffect("CoffeePour");
+                tea.Play();
                 break;
 
         }

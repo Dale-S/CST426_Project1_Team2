@@ -13,10 +13,10 @@ MonoImporter:
   - currCup: {instanceID: 0}
   - _soundManager: {instanceID: 0}
   - sugar: {fileID: 221438449363580818, guid: a62941564c0ceac4fa516f689f85e524, type: 3}
-  - water: {instanceID: 0}
-  - tea: {instanceID: 0}
+  - water: {fileID: 3412007568495746409, guid: 4b86222fe9a99bb4d882bc33c2f88eaf, type: 3}
+  - tea: {fileID: 334800254330059305, guid: 78437b6b8c9412b439ab6f20c4da491b, type: 3}
   - milk: {fileID: 426232460132511735, guid: 28df285c3b2cbe74b8af3d12400a4f07, type: 3}
-  - espresso: {instanceID: 0}
+  - espresso: {fileID: 3660973204866200913, guid: d6fc3c42036c87b4ebde95ed13f610fb, type: 3}
   - playerCamera: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
