@@ -34,7 +34,7 @@ public class GameplayManager : MonoBehaviour
     private int _failedFulfillmentCount = 0;
     
     //SoundManager to play sounds
-    private SoundManager _soundManager;
+    public SoundManager _soundManager;
 
     private const int LayerMask = 1 << 6;
 
@@ -45,7 +45,6 @@ public class GameplayManager : MonoBehaviour
     void Start()
     {
         OrderManager.Instance.NextOrder();
-        _soundManager = SoundManager.instance;
         _drink = null;
     }
 
@@ -158,7 +157,7 @@ public class GameplayManager : MonoBehaviour
             if (DWM.getCups() > 0)
             {
                 DWM.subtractCup();
-                _soundManager.PlayIceClink();
+                _soundManager.PlaySoundEffect("IceClink");
             }
         }
     }
@@ -169,19 +168,19 @@ public class GameplayManager : MonoBehaviour
         switch (interactableItem.interactableName)
         {
             case "Water":
-                _soundManager.PlayMilkPour();
+                _soundManager.PlaySoundEffect("MilkPour");
                 break;
             case "Milk" :
-                _soundManager.PlayMilkPour();
+                _soundManager.PlaySoundEffect("MilkPour");
                 break;
             case "Sugar":
-                _soundManager.PlaySugarPour();
+                _soundManager.PlaySoundEffect("SugarPour");
                 break;
             case "Espresso":
-                _soundManager.PlayCoffeePour();
+                _soundManager.PlaySoundEffect("CoffeePour");
                 break;
             case "Tea":
-                _soundManager.PlayCoffeePour();
+                _soundManager.PlaySoundEffect("CoffeePour");
                 break;
 
         }
