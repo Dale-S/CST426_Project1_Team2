@@ -19,8 +19,6 @@ public class GameplayScript : MonoBehaviour
     public GameObject i4;
     public GameObject i5;
 
-    public ParticleSystem sugar, water, tea, milk, espresso;
-    
     //First playable values
     public TextMeshProUGUI orderText;
     public TextMeshProUGUI warningText;

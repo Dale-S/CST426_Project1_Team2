@@ -37,6 +37,9 @@ public class GameplayManager : MonoBehaviour
     public SoundManager _soundManager;
 
     private const int LayerMask = 1 << 6;
+    
+    //particle effects
+    public ParticleSystem sugar, water, tea, milk, espresso;
 
 
     public Camera playerCamera;
@@ -174,9 +177,11 @@ public class GameplayManager : MonoBehaviour
                 break;
             case "Milk" :
                 _soundManager.PlaySoundEffect("MilkPour");
+                milk.Play();
                 break;
             case "Sugar":
                 _soundManager.PlaySoundEffect("SugarPour");
+                sugar.Play();
                 break;
             case "Espresso":
                 _soundManager.PlaySoundEffect("CoffeePour");

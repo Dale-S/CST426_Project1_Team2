@@ -3,7 +3,21 @@ guid: d4a01185733724b6689e8333fcab748f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - MH: {instanceID: 0}
+  - DWM: {instanceID: 0}
+  - MM: {instanceID: 0}
+  - orderText: {instanceID: 0}
+  - warningText: {instanceID: 0}
+  - arrow: {instanceID: 0}
+  - currCup: {instanceID: 0}
+  - _soundManager: {instanceID: 0}
+  - sugar: {fileID: 221438449363580818, guid: a62941564c0ceac4fa516f689f85e524, type: 3}
+  - water: {instanceID: 0}
+  - tea: {instanceID: 0}
+  - milk: {fileID: 426232460132511735, guid: 28df285c3b2cbe74b8af3d12400a4f07, type: 3}
+  - espresso: {instanceID: 0}
+  - playerCamera: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
