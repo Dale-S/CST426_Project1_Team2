@@ -1,62 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
+using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager instance;
-    
-    public AudioSource coffeePour;
-    public AudioSource milkPour;
-    public AudioSource sugarPour;
-    public AudioSource iceClink;
+    [System.Serializable]
+    public class SoundEffect
+    {
+        public string name;
+        public AudioClip clip;
+        [Range(0, 1)]
+        public float volume = 1f;
+        public float cooldown = 2f; // Cooldown period for this sound effect.
+        [HideInInspector]
+        public float lastPlayTime; // Time when the last play occurred.
+    }
+
+    public List<SoundEffect> soundEffects;
+    private Dictionary<string, AudioSource> audioSources;
 
     private void Awake()
     {
-        // Ensure only one instance of the SoundManager exists
-        if (instance == null)
+        audioSources = new Dictionary<string, AudioSource>();
+        foreach (var soundEffect in soundEffects)
         {
-            instance = this;
+            // Create an AudioSource for each sound effect.
+            var audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.clip = soundEffect.clip;
+            audioSource.volume = soundEffect.volume;
+            audioSources[soundEffect.name] = audioSource;
+        }
+    }
+
+    // Add a method to play a sound effect with cooldown.
+    public void PlaySoundEffect(string soundEffectName)
+    {
+        if (audioSources.ContainsKey(soundEffectName))
+        {
+            var soundEffect = soundEffects.Find(s => s.name == soundEffectName);
+            if (Time.time - soundEffect.lastPlayTime >= soundEffect.cooldown)
+            {
+                audioSources[soundEffectName].PlayOneShot(soundEffect.clip);
+                soundEffect.lastPlayTime = Time.time;
+            }
         }
         else
         {
-            Destroy(gameObject);
-            return;
+            Debug.LogWarning("Sound effect not found: " + soundEffectName);
         }
-
-        // Don't destroy the SoundManager when changing scenes
-        DontDestroyOnLoad(gameObject);
-
-        // Initialize audio sources
-        coffeePour = transform.GetChild(0).GetComponent<AudioSource>(); // Adjust index as needed
-        milkPour = transform.GetChild(1).GetComponent<AudioSource>();
-        sugarPour = transform.GetChild(2).GetComponent<AudioSource>();
-        iceClink = transform.GetChild(3).GetComponent<AudioSource>();
     }
-
-    // Play CoffeePour
-    public void PlayCoffeePour()
-    {
-        coffeePour.Play();
-    }
-
-    // Play milkPour
-    public void PlayMilkPour()
-    {
-        milkPour.Play();
-    }
-    
-    //Play sugarPour
-    public void PlaySugarPour()
-    {
-        sugarPour.Play();
-    }
-    
-    //Play iceClink
-    public void PlayIceClink()
-    {
-        iceClink.Play();
-    }
-    // Add more methods to play additional sounds as needed
 }

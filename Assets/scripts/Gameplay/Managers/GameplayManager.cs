@@ -32,6 +32,9 @@ public class GameplayManager : MonoBehaviour
     public TextMeshProUGUI currCup;
     private int _successfulFulfillmentCount = 0;
     private int _failedFulfillmentCount = 0;
+    
+    //SoundManager to play sounds
+    public SoundManager _soundManager;
 
     private const int LayerMask = 1 << 6;
 
@@ -83,10 +86,12 @@ public class GameplayManager : MonoBehaviour
                 if (ratio < 0.5f)
                 {
                     _failedFulfillmentCount++;
+                    _soundManager.PlaySoundEffect("WrongOrder");
                 }
                 else
                 {
                     _successfulFulfillmentCount++;
+                    _soundManager.PlaySoundEffect("RightOrder");
                     MH.addFunds(10);
                 }
             
@@ -154,6 +159,7 @@ public class GameplayManager : MonoBehaviour
             if (DWM.getCups() > 0)
             {
                 DWM.subtractCup();
+                _soundManager.PlaySoundEffect("IceClink");
             }
         }
     }
@@ -161,6 +167,25 @@ public class GameplayManager : MonoBehaviour
     private void HandleClickIngredient(InteractableItem interactableItem)
     {
         interactableItem.OnInteract(_drink);
+        switch (interactableItem.interactableName)
+        {
+            case "Water":
+                _soundManager.PlaySoundEffect("MilkPour");
+                break;
+            case "Milk" :
+                _soundManager.PlaySoundEffect("MilkPour");
+                break;
+            case "Sugar":
+                _soundManager.PlaySoundEffect("SugarPour");
+                break;
+            case "Espresso":
+                _soundManager.PlaySoundEffect("CoffeePour");
+                break;
+            case "Tea":
+                _soundManager.PlaySoundEffect("CoffeePour");
+                break;
+
+        }
         GiveMessage("Added " + interactableItem.interactableName);
     }
 
