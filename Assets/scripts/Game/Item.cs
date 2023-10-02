@@ -116,7 +116,8 @@ public class DrinkCs : Item, IHasIngredients
         else
         {
             _ingredientCount[ingredient] = count;
-        }            
+        }
+
         CheckForPrimary(ingredient);
     }
 
@@ -194,7 +195,7 @@ public class DrinkCs : Item, IHasIngredients
             }
         }
 
-        float sum = correct - missing - incorrect;        
+        float sum = correct - missing - incorrect;
         Debug.Log(sum);
 
         return Mathf.Clamp01(sum / _ingredientCount.Count);
@@ -237,41 +238,47 @@ public class OrderCs
 
     private void AssignCoffee()
     {
+        const int espressoMin = 1;
+        const int espressoMaxExclusive = 4;
+        const int milkMin = 1;
+        const int milkMaxExclusive = 3;
+        const int sugarMin = 1;
+        const int sugarMaxExclusive = 4;
+
         SetItem(new DrinkCs("latte", 4.0f, ItemType.Coffee, true));
         _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
         {
-            { Ingredient.Espresso, 2 }, { Ingredient.Milk, 1 }, { Ingredient.Sugar, 2 }
+            { Ingredient.Espresso, Random.Range(espressoMin, espressoMaxExclusive) },
+            { Ingredient.Milk, Random.Range(milkMin, milkMaxExclusive) },
+            { Ingredient.Sugar, Random.Range(sugarMin, sugarMaxExclusive) }
         });
     }
 
     private void AssignTea()
     {
+        const int teaMin = 2;
+        const int teaMaxExclusive = 5;
+        const int waterMin = 1;
+        const int waterMaxExclusive = 4;
+        
         SetItem(new DrinkCs("tea", 3.0f, ItemType.Tea, true));
         _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
         {
-            { Ingredient.Tea, 2 }, { Ingredient.Water, 2 }
+            { Ingredient.Tea, Random.Range(teaMin, teaMaxExclusive) },
+            { Ingredient.Water, Random.Range(waterMin, waterMaxExclusive) }
         });
     }
 
     private void AssignWater()
     {
+        const int waterMin = 2;
+        const int waterMaxExclusive = 6;
+        
         SetItem(new DrinkCs("water", 2.0f, ItemType.Water, true));
         _orderItem.ProvideIngredients(new Dictionary<Ingredient, int>
         {
-            { Ingredient.Water, 3 }
+            { Ingredient.Water, Random.Range(waterMin, waterMaxExclusive) }
         });
-    }
-
-    /// <summary>
-    /// NOT TO BE USED - Checks the accuracy of the attempted fulfillment for this Order.
-    /// </summary>
-    /// <param name="provided"> List of type Item for items given to the customer </param>
-    /// <returns> Ratio of the cost given as payment based on the accuracy of the order fulfillment [0,1] </returns>
-    public float FulfillmentAccuracy(List<DrinkCs> provided)
-    {
-        float correctness = 0f;
-        provided.ForEach(delegate(DrinkCs item) { correctness += ItemAccuracy(item); });
-        return correctness;
     }
 
     /// <summary>
