@@ -3849,7 +3849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moneyText: {fileID: 1614398655}
-  addMonText: {fileID: 0}
+  addMonText: {fileID: 939786115}
 --- !u!114 &604591663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6227,6 +6227,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07bf93924436c1b47b429700478dfb6d, type: 3}
+--- !u!1 &939786115 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1790865921425217030, guid: d53074dd0e2c9ee4e921adcc0c233727, type: 3}
+  m_PrefabInstance: {fileID: 1061325741}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &946495089
 GameObject:
   m_ObjectHideFlags: 0
