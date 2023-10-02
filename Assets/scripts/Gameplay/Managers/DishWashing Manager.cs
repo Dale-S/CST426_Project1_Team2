@@ -16,6 +16,7 @@ public class DishWashingManager : MonoBehaviour
     private float fillIncrement = 0.20f;
     private float currFill = 0;
     public Image fill;
+    public SoundManager soundManager;
 
 
     // Update is called once per frame
@@ -30,6 +31,7 @@ public class DishWashingManager : MonoBehaviour
                 {
                     Debug.Log("cup if statement entered");
                     currFill += fillIncrement;
+                    soundManager.PlaySoundEffect("PlateWash");
                     Debug.Log(currFill);
                     if (currFill >= 1.0f)
                     {
