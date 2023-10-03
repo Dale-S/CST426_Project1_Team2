@@ -15,14 +15,14 @@ public class GameplayManager : MonoBehaviour
     private float currentMessageTime = 0f;
 
     private bool GMActive = true;
-    
+
     //Money Handler Instantiation
     public MoneyHandler MH;
     public DishWashingManager DWM;
     public MinigameManager MM;
 
     private DrinkCs _drink; // change this to be done by an DrinkManager
-    
+
     //Design Variables
     public TextMeshProUGUI orderText;
     public TextMeshProUGUI warningText;
@@ -34,15 +34,22 @@ public class GameplayManager : MonoBehaviour
     public TextMeshProUGUI currCup;
     private int _successfulFulfillmentCount = 0;
     private int _failedFulfillmentCount = 0;
-    
+
     //SoundManager to play sounds
     public SoundManager _soundManager;
 
     private const int LayerMask = 1 << 6;
+
     //particle effects
     public ParticleSystem sugar, water, tea, milk, espresso;
 
     public Camera playerCamera;
+
+    [Header("Icon-Count Text Elements")] public TextMeshProUGUI espressoCountText;
+    public TextMeshProUGUI milkCountText;
+    public TextMeshProUGUI sugarCountText;
+    public TextMeshProUGUI teaCountText;
+    public TextMeshProUGUI waterCountText;
 
     // Start is called before the first frame update
     void Start()
@@ -75,7 +82,7 @@ public class GameplayManager : MonoBehaviour
                 arrow.SetActive(true);
                 tableCup.SetActive(false);
             }
-            
+
             tableCup.SetActive(false);
         }
         else
@@ -101,12 +108,13 @@ public class GameplayManager : MonoBehaviour
                     _soundManager.PlaySoundEffect("RightOrder");
                     MH.addFunds(10);
                 }
-            
+
                 _drink = null;
                 heldCup.SetActive(false);
                 OrderManager.Instance.NextOrder();
                 GiveMessage("Order given to customer");
             }
+
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
@@ -121,18 +129,18 @@ public class GameplayManager : MonoBehaviour
                     {
                         HandleClickCup();
                     }
-            
+
                     else if (_drink == null)
                     {
                         GiveMessage("You need to grab a cup first!");
                     }
-            
+
                     else if (hit.transform.CompareTag("Ingredient"))
                     {
-                        InteractableItem interactableItem = hit.transform.gameObject.GetComponent<InteractableItem>(); 
+                        InteractableItem interactableItem = hit.transform.gameObject.GetComponent<InteractableItem>();
                         HandleClickIngredient(interactableItem);
                     }
-            
+
                     else if (hit.transform.CompareTag("Trash"))
                     {
                         HandleClickTrash();
@@ -140,6 +148,7 @@ public class GameplayManager : MonoBehaviour
                 }
             }
         }
+
         UpdateText();
     }
 
@@ -183,7 +192,7 @@ public class GameplayManager : MonoBehaviour
                 _soundManager.PlaySoundEffect("MilkPour");
                 water.Play();
                 break;
-            case "Milk" :
+            case "Milk":
                 _soundManager.PlaySoundEffect("MilkPour");
                 milk.Play();
                 break;
@@ -199,8 +208,8 @@ public class GameplayManager : MonoBehaviour
                 _soundManager.PlaySoundEffect("CoffeePour");
                 tea.Play();
                 break;
-
         }
+
         GiveMessage("Added " + interactableItem.interactableName);
     }
 
@@ -217,12 +226,40 @@ public class GameplayManager : MonoBehaviour
         orderText.text = OrderManager.Instance.GetOrder() == null
             ? "Waiting for order(if this is here for more than a couple seconds something went wrong, please restart the game)"
             : OrderManager.Instance.PrintOrder();
-        /*
-        currCup.text = _drink == null
-            ? "You need to grab a cup first!"
-            : "" + _drink.FormatItem();
-`       */
-        //scoreText.text = "Correct: " + _successfulFulfillmentCount + " | Wrong: " + _failedFulfillmentCount;
+
+        if (_drink == null)
+            FormatIconCountZero();
+        else
+            FormatIconCount();
+    }
+
+    private void FormatIconCountZero()
+    {
+        UpdateCount(espressoCountText, 0);
+        UpdateCount(milkCountText, 0);
+        UpdateCount(waterCountText, 0);
+        UpdateCount(teaCountText, 0);
+        UpdateCount(sugarCountText, 0);
+    }
+
+    private void FormatIconCount()
+    {
+        Dictionary<Ingredient, int> ingredientCountDict = _drink.GetIngredients();
+        UpdateCount(espressoCountText,
+            ingredientCountDict.ContainsKey(Ingredient.Espresso) ? ingredientCountDict[Ingredient.Espresso] : 0);        
+        UpdateCount(waterCountText,
+            ingredientCountDict.ContainsKey(Ingredient.Water) ? ingredientCountDict[Ingredient.Water] : 0);
+        UpdateCount(teaCountText,
+            ingredientCountDict.ContainsKey(Ingredient.Tea) ? ingredientCountDict[Ingredient.Tea] : 0);
+        UpdateCount(milkCountText,
+            ingredientCountDict.ContainsKey(Ingredient.Milk) ? ingredientCountDict[Ingredient.Milk] : 0);
+        UpdateCount(sugarCountText,
+            ingredientCountDict.ContainsKey(Ingredient.Sugar) ? ingredientCountDict[Ingredient.Sugar] : 0);
+    }
+
+    private void UpdateCount(TextMeshProUGUI textElement, int count)
+    {
+        textElement.text = count.ToString();
     }
 
     public void gmState(bool value)
