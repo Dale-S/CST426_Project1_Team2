@@ -22,13 +22,11 @@ public class GameplayManager : MonoBehaviour
     public MinigameManager MM;
 
     private DrinkCs _drink; // change this to be done by an DrinkManager
-    
-    //Design Variables
+
+    //First playable values
     public TextMeshProUGUI orderText;
     public TextMeshProUGUI warningText;
     public GameObject arrow;
-    public GameObject heldCup;
-    public GameObject tableCup;
 
     //public TextMeshProUGUI scoreText;
     public TextMeshProUGUI currCup;
@@ -39,6 +37,9 @@ public class GameplayManager : MonoBehaviour
     public SoundManager _soundManager;
 
     private const int LayerMask = 1 << 6;
+    
+    //particle effects
+    public ParticleSystem sugar, water, tea, milk, espresso;
 
 
     public Camera playerCamera;
@@ -65,22 +66,18 @@ public class GameplayManager : MonoBehaviour
 
         if (DWM.getCups() < 1)
         {
-            if (MM.currFocus() != 0 || _drink != null)
+            if (MM.currFocus() != 0)
             {
                 arrow.SetActive(false);
             }
             else
             {
                 arrow.SetActive(true);
-                tableCup.SetActive(false);
             }
-            
-            tableCup.SetActive(false);
         }
         else
         {
             arrow.SetActive(false);
-            tableCup.SetActive(true);
         }
 
         if (GMActive)
@@ -102,7 +99,6 @@ public class GameplayManager : MonoBehaviour
                 }
             
                 _drink = null;
-                heldCup.SetActive(false);
                 OrderManager.Instance.NextOrder();
                 GiveMessage("Order given to customer");
             }
@@ -146,7 +142,6 @@ public class GameplayManager : MonoBehaviour
     {
         _drink = null;
         GiveMessage("Cup thrown away");
-        heldCup.SetActive(false);
     }
 
     private void HandleClickCup()
@@ -162,7 +157,6 @@ public class GameplayManager : MonoBehaviour
         else
         {
             _drink = new DrinkCs();
-            heldCup.SetActive(true);
             Debug.Log(">>new cup grabbed<<");
             GiveMessage("New Cup Grabbed");
             if (DWM.getCups() > 0)
@@ -180,18 +174,23 @@ public class GameplayManager : MonoBehaviour
         {
             case "Water":
                 _soundManager.PlaySoundEffect("MilkPour");
+                water.Play();
                 break;
             case "Milk" :
                 _soundManager.PlaySoundEffect("MilkPour");
+                milk.Play();
                 break;
             case "Sugar":
                 _soundManager.PlaySoundEffect("SugarPour");
+                sugar.Play();
                 break;
             case "Espresso":
                 _soundManager.PlaySoundEffect("CoffeePour");
+                espresso.Play();
                 break;
             case "Tea":
                 _soundManager.PlaySoundEffect("CoffeePour");
+                tea.Play();
                 break;
 
         }

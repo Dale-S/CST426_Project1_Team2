@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -29,7 +28,7 @@ public class PauseMenuController : MonoBehaviour
     private void Update()
     {
         // Check for pause input (e.g., 'P' key)
-        if ((Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) &&  canPause)
+        if (Input.GetKeyDown(KeyCode.P) &&  canPause)
         {
             Debug.Log("Pressed P");
             if (isPaused)
@@ -70,15 +69,9 @@ public class PauseMenuController : MonoBehaviour
     {
         Time.timeScale = 1f; // Resume the game
         pauseMenuUI.SetActive(false);
-        MM.unPause();
         gameplayUI.SetActive(true);
         isPaused = false;
-    }
-
-    public void Restart()
-    {
-        SceneManager.LoadScene(2);
-        Resume();
+        MM.unPause();
     }
 
     public void Quit()
