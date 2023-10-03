@@ -44,4 +44,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b59f79c8d4a7da44691ab7302385f773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundEffects: []
+  soundEffects:
+  - name: CoffeePour
+    clip: {fileID: 8300000, guid: 06e544653deac8b46901e6e3b3cb26c3, type: 3}
+    volume: 1
+    cooldown: 1.5
+    lastPlayTime: 0
+  - name: MilkPour
+    clip: {fileID: 8300000, guid: 8d05268221ab68c41b5a87dd66d0f66f, type: 3}
+    volume: 1
+    cooldown: 1.5
+    lastPlayTime: 0
+  - name: SugarPour
+    clip: {fileID: 8300000, guid: 87185a237a8f5d24981bc9627eff5165, type: 3}
+    volume: 1
+    cooldown: 1.5
+    lastPlayTime: 0
+  - name: IceClink
+    clip: {fileID: 8300000, guid: 27e62c10737d1314fbee4c623de18721, type: 3}
+    volume: 1
+    cooldown: 0
+    lastPlayTime: 0
+  - name: PlateWash
+    clip: {fileID: 8300000, guid: 2b661cc847db54f348d54072e3fdef56, type: 3}
+    volume: 1
+    cooldown: 1
+    lastPlayTime: 0
+  - name: RightOrder
+    clip: {fileID: 8300000, guid: d475ec26625fd4da98b5953dc30c9fdf, type: 3}
+    volume: 1
+    cooldown: 0
+    lastPlayTime: 0
+  - name: WrongOrder
+    clip: {fileID: 8300000, guid: d8e75cbd70ac747f68c9f426b4fd3354, type: 3}
+    volume: 0.111
+    cooldown: 0
+    lastPlayTime: 0
