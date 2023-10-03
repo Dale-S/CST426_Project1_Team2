@@ -18,7 +18,7 @@ public class GameplayScript : MonoBehaviour
     public GameObject i3;
     public GameObject i4;
     public GameObject i5;
-
+    
     //First playable values
     public TextMeshProUGUI orderText;
     public TextMeshProUGUI warningText;
