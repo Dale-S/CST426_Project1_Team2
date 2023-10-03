@@ -345,6 +345,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4098649256313589521, guid: d6fc3c42036c87b4ebde95ed13f610fb, type: 3}
   m_PrefabInstance: {fileID: 17685599}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &17685601 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3660973204866200913, guid: d6fc3c42036c87b4ebde95ed13f610fb, type: 3}
+  m_PrefabInstance: {fileID: 17685599}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &31410784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -997,6 +1002,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5863609309444807758, guid: 78437b6b8c9412b439ab6f20c4da491b, type: 3}
   m_PrefabInstance: {fileID: 86977236}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &86977238 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 334800254330059305, guid: 78437b6b8c9412b439ab6f20c4da491b, type: 3}
+  m_PrefabInstance: {fileID: 86977236}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &102038737
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1065,6 +1075,11 @@ PrefabInstance:
 --- !u!4 &102038738 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8816215545707891260, guid: a62941564c0ceac4fa516f689f85e524, type: 3}
+  m_PrefabInstance: {fileID: 102038737}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &102038739 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 221438449363580818, guid: a62941564c0ceac4fa516f689f85e524, type: 3}
   m_PrefabInstance: {fileID: 102038737}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &111494715
@@ -4463,11 +4478,11 @@ MonoBehaviour:
   tableCup: {fileID: 876104576}
   currCup: {fileID: 0}
   _soundManager: {fileID: 1810753067}
-  sugar: {fileID: 221438449363580818, guid: a62941564c0ceac4fa516f689f85e524, type: 3}
-  water: {fileID: 3412007568495746409, guid: 4b86222fe9a99bb4d882bc33c2f88eaf, type: 3}
-  tea: {fileID: 334800254330059305, guid: 78437b6b8c9412b439ab6f20c4da491b, type: 3}
-  milk: {fileID: 426232460132511735, guid: 28df285c3b2cbe74b8af3d12400a4f07, type: 3}
-  espresso: {fileID: 3660973204866200913, guid: d6fc3c42036c87b4ebde95ed13f610fb, type: 3}
+  sugar: {fileID: 102038739}
+  water: {fileID: 1881971664}
+  tea: {fileID: 86977238}
+  milk: {fileID: 2047934671}
+  espresso: {fileID: 17685601}
   playerCamera: {fileID: 1717533828}
 --- !u!114 &604591666
 MonoBehaviour:
@@ -10393,6 +10408,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1789664444539380, guid: 8d57f19c265de49429f0074af4e75232, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1789664444539380, guid: 8d57f19c265de49429f0074af4e75232, type: 3}
       propertyPath: m_TagString
       value: Cup
       objectReference: {fileID: 0}
@@ -13574,7 +13593,7 @@ Transform:
   m_GameObject: {fileID: 1762932584}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -576.34216, y: -727.4769, z: 509.438}
+  m_LocalPosition: {x: -575.13, y: -727.4769, z: 509.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14579,6 +14598,11 @@ PrefabInstance:
 --- !u!4 &1881971663 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8316095572367322134, guid: 4b86222fe9a99bb4d882bc33c2f88eaf, type: 3}
+  m_PrefabInstance: {fileID: 1881971662}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1881971664 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3412007568495746409, guid: 4b86222fe9a99bb4d882bc33c2f88eaf, type: 3}
   m_PrefabInstance: {fileID: 1881971662}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1889227256
@@ -16074,6 +16098,11 @@ PrefabInstance:
 --- !u!4 &2047934670 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7764167159592689011, guid: 28df285c3b2cbe74b8af3d12400a4f07, type: 3}
+  m_PrefabInstance: {fileID: 2047934669}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2047934671 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 426232460132511735, guid: 28df285c3b2cbe74b8af3d12400a4f07, type: 3}
   m_PrefabInstance: {fileID: 2047934669}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2075338159
