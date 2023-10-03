@@ -217,11 +217,11 @@ public class GameplayManager : MonoBehaviour
         orderText.text = OrderManager.Instance.GetOrder() == null
             ? "Waiting for order(if this is here for more than a couple seconds something went wrong, please restart the game)"
             : OrderManager.Instance.PrintOrder();
-
+        /*
         currCup.text = _drink == null
             ? "You need to grab a cup first!"
             : "" + _drink.FormatItem();
-
+`       */
         //scoreText.text = "Correct: " + _successfulFulfillmentCount + " | Wrong: " + _failedFulfillmentCount;
     }
 
