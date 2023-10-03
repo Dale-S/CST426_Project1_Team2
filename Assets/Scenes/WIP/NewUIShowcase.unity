@@ -1145,17 +1145,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4144127801217286, guid: 04e98152be2a54c62993ce0e60e111fe, type: 3}
   m_PrefabInstance: {fileID: 135403863}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &162546091 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1543003990699382321, guid: d53074dd0e2c9ee4e921adcc0c233727, type: 3}
-  m_PrefabInstance: {fileID: 362757228}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &178606068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4072,11 +4061,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56446d026da2c6d4da80b6f5b62dd339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  day: {fileID: 162546091}
+  day: {fileID: 1191322420}
   timer: {fileID: 566381519}
   total: {fileID: 1612021621}
   today: {fileID: 1694749883}
-  pastDay: {fileID: 828450691}
+  pastDay: {fileID: 1191322420}
   nextDayButton: {fileID: 1547532540}
   gameplayUI: {fileID: 0}
   MH: {fileID: 604591662}
@@ -8067,6 +8056,17 @@ Transform:
   - {fileID: 1410583742}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1191322420 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5199951821703446462, guid: d53074dd0e2c9ee4e921adcc0c233727, type: 3}
+  m_PrefabInstance: {fileID: 362757228}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1194064011
 PrefabInstance:
   m_ObjectHideFlags: 0
