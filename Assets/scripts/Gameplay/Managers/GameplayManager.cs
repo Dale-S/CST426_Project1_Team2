@@ -22,11 +22,13 @@ public class GameplayManager : MonoBehaviour
     public MinigameManager MM;
 
     private DrinkCs _drink; // change this to be done by an DrinkManager
-
-    //First playable values
+    
+    //Design Variables
     public TextMeshProUGUI orderText;
     public TextMeshProUGUI warningText;
     public GameObject arrow;
+    public GameObject heldCup;
+    public GameObject tableCup;
 
     //public TextMeshProUGUI scoreText;
     public TextMeshProUGUI currCup;
@@ -37,10 +39,8 @@ public class GameplayManager : MonoBehaviour
     public SoundManager _soundManager;
 
     private const int LayerMask = 1 << 6;
-    
     //particle effects
     public ParticleSystem sugar, water, tea, milk, espresso;
-
 
     public Camera playerCamera;
 
@@ -66,18 +66,22 @@ public class GameplayManager : MonoBehaviour
 
         if (DWM.getCups() < 1)
         {
-            if (MM.currFocus() != 0)
+            if (MM.currFocus() != 0 || _drink != null)
             {
                 arrow.SetActive(false);
             }
             else
             {
                 arrow.SetActive(true);
+                tableCup.SetActive(false);
             }
+            
+            tableCup.SetActive(false);
         }
         else
         {
             arrow.SetActive(false);
+            tableCup.SetActive(true);
         }
 
         if (GMActive)
@@ -99,6 +103,7 @@ public class GameplayManager : MonoBehaviour
                 }
             
                 _drink = null;
+                heldCup.SetActive(false);
                 OrderManager.Instance.NextOrder();
                 GiveMessage("Order given to customer");
             }
@@ -142,6 +147,7 @@ public class GameplayManager : MonoBehaviour
     {
         _drink = null;
         GiveMessage("Cup thrown away");
+        heldCup.SetActive(false);
     }
 
     private void HandleClickCup()
@@ -157,6 +163,7 @@ public class GameplayManager : MonoBehaviour
         else
         {
             _drink = new DrinkCs();
+            heldCup.SetActive(true);
             Debug.Log(">>new cup grabbed<<");
             GiveMessage("New Cup Grabbed");
             if (DWM.getCups() > 0)
