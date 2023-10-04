@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Production/Tutorial.unity
     guid: eb26fcd097034174f883acba54fd0dd0
   - enabled: 1
+    path: Assets/Scenes/Production/CafeScene.unity
+    guid: b42a2a9b30af86f4e9bdebd5be103e2c
+  - enabled: 0
     path: Assets/Scenes/Production/CafeScene 10-3.unity
     guid: af362253c785ccc4fb3322aaa16ea5ce
   - enabled: 0
