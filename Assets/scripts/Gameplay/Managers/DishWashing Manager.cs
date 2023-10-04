@@ -17,6 +17,7 @@ public class DishWashingManager : MonoBehaviour
     private float currFill = 0;
     public Image fill;
     public SoundManager soundManager;
+    public ParticleSystem bubble;
 
 
     // Update is called once per frame
@@ -26,13 +27,15 @@ public class DishWashingManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Debug.Log("key pressed");
+                //Debug.Log("key pressed");
                 if (cups < maxCups)
                 {
-                    Debug.Log("cup if statement entered");
+                    //Debug.Log("cup if statement entered");
                     currFill += fillIncrement;
                     soundManager.PlaySoundEffect("PlateWash");
-                    Debug.Log(currFill);
+                    soundManager.PlaySoundEffect("Bubble");
+                    bubble.Play();
+                    //Debug.Log(currFill);
                     if (currFill >= 1.0f)
                     {
                         cups++;
