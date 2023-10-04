@@ -67,7 +67,7 @@ MonoBehaviour:
     lastPlayTime: 0
   - name: PlateWash
     clip: {fileID: 8300000, guid: 2b661cc847db54f348d54072e3fdef56, type: 3}
-    volume: 1
+    volume: 0.547
     cooldown: 1
     lastPlayTime: 0
   - name: RightOrder
@@ -77,6 +77,11 @@ MonoBehaviour:
     lastPlayTime: 0
   - name: WrongOrder
     clip: {fileID: 8300000, guid: d8e75cbd70ac747f68c9f426b4fd3354, type: 3}
-    volume: 0.111
+    volume: 0.379
+    cooldown: 0
+    lastPlayTime: 0
+  - name: Bubble
+    clip: {fileID: 8300000, guid: c46c90c49a8945d4697188c0487fecbb, type: 3}
+    volume: 0.486
     cooldown: 0
     lastPlayTime: 0
