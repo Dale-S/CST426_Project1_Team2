@@ -11,7 +11,7 @@ public class DayTimerManager : MonoBehaviour
     private float minutes = 2f;
     private float dayTime;
     private float timeLeft = 0f;
-    
+
     //Day tracking
     private int dayCount = 1;
     private bool dayOver = false;
@@ -25,9 +25,11 @@ public class DayTimerManager : MonoBehaviour
     public TextMeshProUGUI pastDay;
     public GameObject nextDayButton;
     public GameObject gameplayUI;
+    public TextMeshProUGUI WinText;
     
     public MoneyHandler MH;
     public MinigameManager MM;
+    private int tempTotal = 0;
     
 
     public GameObject DayEndScreen;
@@ -60,16 +62,26 @@ public class DayTimerManager : MonoBehaviour
             gameplayUI.SetActive(false);
             if (!dayOver)
             {
+                WinText.text = "";
                 pastDay.text = $"End of Day: {dayCount}";
                 total.text = $"Total Money Earned: ${MH.calcTotal()}";
+                tempTotal = MH.returnTotal();
                 today.text = $"Money Earned Today: ${MH.returnFunds()}";
                 MH.emptyCurrent();
                 dayOver = true;
-                //MM.disableAll();
+                MM.disableAll();
             }
             if (dayCount >= maxDays)
             {
                 nextDayButton.SetActive(false);
+                if (tempTotal < 500)
+                {
+                    WinText.text = "Sorry, didn't quite make the money necessary. Time for a loan";
+                }
+                else
+                {
+                    WinText.text = "Congrats!!! Your debt has been paid off :)";
+                }
             }
         }
     }
@@ -82,7 +94,7 @@ public class DayTimerManager : MonoBehaviour
         timeLeft = dayTime + loadBuffer;
         dayCount++;
         day.text = $"{dayCount}";
-        //MM.enableAll();
+        MM.enableAll();
     }
 }
 

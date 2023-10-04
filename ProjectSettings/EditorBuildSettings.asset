@@ -13,17 +13,5 @@ EditorBuildSettings:
     guid: eb26fcd097034174f883acba54fd0dd0
   - enabled: 1
     path: Assets/Scenes/Production/CafeScene.unity
-    guid: b42a2a9b30af86f4e9bdebd5be103e2c
-  - enabled: 0
-    path: Assets/Scenes/Production/CafeScene 10-3.unity
-    guid: af362253c785ccc4fb3322aaa16ea5ce
-  - enabled: 0
-    path: Assets/Scenes/WIP/ExternalPlaytest.unity
-    guid: d467b8af0f3bc3e4b8267c9db5b359b2
-  - enabled: 0
-    path: Assets/Scenes/WIP/Playtest2.unity
-    guid: b5946cd931827491182696de54dcff71
-  - enabled: 0
-    path: Assets/Scenes/WIP/TempMainScene.unity
-    guid: bbadf29ffff1604439c5a4026d4710d0
+    guid: b053aad9cb7d32242b923cb14bca5e56
   m_configObjects: {}
