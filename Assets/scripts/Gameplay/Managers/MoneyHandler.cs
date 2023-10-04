@@ -49,6 +49,11 @@ public class MoneyHandler : MonoBehaviour
         return currMoney;
     }
 
+    public int returnTotal()
+    {
+        return total;
+    }
+
     public int calcTotal()
     {
         total += currMoney;

@@ -7,6 +7,7 @@ public class MinigameManager : MonoBehaviour
 {
     private int focus = 0;
     private bool paused = false;
+    private bool disabled = false;
     
     //Managers for minigame state altering
     public DishWashingManager DWM;
@@ -14,7 +15,7 @@ public class MinigameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) //When Game is Paused
+        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) //When Game is Paused
         {
             if (!paused) 
             {
@@ -27,38 +28,41 @@ public class MinigameManager : MonoBehaviour
                 paused = false;
             }
         }
-        if (Input.GetKeyDown(KeyCode.A))
+
+        if (!disabled)
         {
-            focus--;
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                focus--;
             
-            if (focus < 0)
-            {
-                focus = 3;
+                if (focus < 0)
+                {
+                    focus = 3;
+                }
+
+                if (focus > 3)
+                {
+                    focus = 0;
+                }
+                setMG();
             }
 
-            if (focus > 3)
+            if (Input.GetKeyDown(KeyCode.D))
             {
-                focus = 0;
-            }
-            setMG();
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            focus++;
+                focus++;
             
-            if (focus < 0)
-            {
-                focus = 3;
-            }
+                if (focus < 0)
+                {
+                    focus = 3;
+                }
 
-            if (focus > 3)
-            {
-                focus = 0;
+                if (focus > 3)
+                {
+                    focus = 0;
+                }
+                setMG();
             }
-            setMG();
         }
-        
     }
 
     private void setMG()
@@ -89,21 +93,13 @@ public class MinigameManager : MonoBehaviour
     {
         DWM.dwState(false);
         GM.gmState(false);
+        disabled = true;
     }
 
     public void enableAll()
     {
-        if (focus == 0) //Set coffee station true
-        {
-            DWM.dwState(false);
-            GM.gmState(true);
-        }
-
-        if (focus == 3) //Set dishwasher true
-        {
-            GM.gmState(false);
-            DWM.dwState(true);
-        }
+        disabled = false;
+        setMG();
     }
 
     public void unPause()

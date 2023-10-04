@@ -25,7 +25,7 @@ public class DishWashingManager : MonoBehaviour
     {
         if (DWActive)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) && DWActive)
             {
                 //Debug.Log("key pressed");
                 if (cups < maxCups)

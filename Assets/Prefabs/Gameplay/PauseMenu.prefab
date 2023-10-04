@@ -1423,8 +1423,8 @@ RectTransform:
   m_Children:
   - {fileID: 2211755871492486790}
   - {fileID: 4012335801103478167}
-  - {fileID: 7647470548719454886}
   - {fileID: 5941388481338172196}
+  - {fileID: 7647470548719454886}
   m_Father: {fileID: 4902584597371549102}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1581,3 +1581,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 2872307130503848397}
   controlUI: {fileID: 8633093655349906430}
+  gameplayUI: {fileID: 0}
+  MM: {fileID: 0}
